@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CurrencyExchange.Core\CurrencyExchange.Core.csproj" />
+  </ItemGroup>
+
 </Project>
