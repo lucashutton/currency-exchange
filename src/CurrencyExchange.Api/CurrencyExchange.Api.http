@@ -17,7 +17,7 @@ GET {{baseUrl}}/api/convert?from=GBP&to=USD&amount=-100
 Accept: application/json
 
 ### unknown codes rejected (expect 400)
-GET {{baseUrl}}/api/convert?from=XYZ&to=USD&amount=-100
+GET {{baseUrl}}/api/convert?from=XYZ&to=USD&amount=100
 Accept: application/json
 
 ### illegal amounts rejected (expect 400)
