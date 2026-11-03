@@ -27,6 +27,14 @@ builder.Services.AddHttpClient<IExchangeRateProvider, FrankfurterRateProvider>((
 // registering CurrencyConverter as default (passing above rate provider)
 builder.Services.AddScoped<ICurrencyConverter, CurrencyConverter>();
 
+// seting browser origins allowed to call the API (set in the configuration) to the Blazor origins
+string[] allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+        policy.WithOrigins(allowedOrigins)
+            .WithMethods("GET")
+            .AllowAnyHeader()));
+
 // allows for detailed problem messages from endpoints
 builder.Services.AddProblemDetails();
 
@@ -40,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// CORS runs before requests reach the endpoints
+app.UseCors();
 
 app.MapCurrencyEndpoints();
 
