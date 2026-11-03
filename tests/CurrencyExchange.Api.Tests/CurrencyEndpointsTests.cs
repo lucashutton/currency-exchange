@@ -52,7 +52,7 @@ public class CurrencyEndpointsTests
         var client = factory.CreateClient();
 
         var response = await client.GetFromJsonAsync<ConversionResponse>("/api/convert?from=GBP&to=USD&amount=100");
-        
+
         Assert.Equal(new ConversionResponse("GBP", "USD", 100, 1.5m, 150, new DateOnly(2026, 11, 3)), response);
     }
 
@@ -72,7 +72,7 @@ public class CurrencyEndpointsTests
         var client = factory.CreateClient();
 
         var response = await client.GetFromJsonAsync<ConversionResponse>("/api/convert?from=gbp&to=usd&amount=100");
-        
+
         Assert.Equal(new ConversionResponse("GBP", "USD", 100, 1.5m, 150, new DateOnly(2026, 11, 3)), response);
     }
 
