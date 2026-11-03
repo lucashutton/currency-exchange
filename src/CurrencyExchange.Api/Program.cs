@@ -1,5 +1,6 @@
 using CurrencyExchange.Core;
 using CurrencyExchange.Infrastructure;
+using CurrencyExchange.Api.Endpoints;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,9 @@ builder.Services.AddHttpClient<IExchangeRateProvider, FrankfurterRateProvider>((
 // registering CurrencyConverter as default (passing above rate provider)
 builder.Services.AddScoped<ICurrencyConverter, CurrencyConverter>();
 
+// allows for detailed problem messages from endpoints
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +39,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.MapCurrencyEndpoints();
 
 app.Run();
 
