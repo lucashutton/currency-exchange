@@ -9,7 +9,7 @@ public class FrankfurterRateProvider(HttpClient client, IMemoryCache memoryCache
 {
     public async Task<IReadOnlyList<Currency>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        string url = $"currencies";
+        string url = "currencies";
 
         // currencies are returned as code : full name
         Dictionary<string, string> rawCurrencies;
@@ -19,6 +19,7 @@ public class FrankfurterRateProvider(HttpClient client, IMemoryCache memoryCache
             // because the currency list doesn't change we cache it for faster lookup
             rawCurrencies = await memoryCache.GetOrCreateAsync("currencies", async entry =>
                 {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
                     return await client.GetFromJsonAsync<Dictionary<string, string>>(url, ct)
                         ?? throw new ExchangeRateUnavailableException("Frankfurter API returned an empty response.");
                 }
@@ -30,7 +31,7 @@ public class FrankfurterRateProvider(HttpClient client, IMemoryCache memoryCache
         {
             throw new ExchangeRateUnavailableException("Frankfurter API could not be reached.", ex);
         }
-        // ignore case where user cancelled the request themselves
+        // pass through case where user cancelled the request themselves
         catch (TaskCanceledException ex) when (!ct.IsCancellationRequested)
         {
             throw new ExchangeRateUnavailableException("Frankfurter API timed out.", ex);
@@ -56,7 +57,7 @@ public class FrankfurterRateProvider(HttpClient client, IMemoryCache memoryCache
         {
             throw new ExchangeRateUnavailableException("Frankfurter API could not be reached.", ex);
         }
-        // ignore case where user cancelled the request themselves
+        // pass through case where user cancelled the request themselves
         catch (TaskCanceledException ex) when (!ct.IsCancellationRequested)
         {
             throw new ExchangeRateUnavailableException("Frankfurter API timed out.", ex);

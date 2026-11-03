@@ -62,5 +62,9 @@ public static class CurrencyEndpoints
         {
             return Results.Problem(detail: ex.Message, statusCode: StatusCodes.Status400BadRequest);
         }
+        catch (OverflowException ex)
+        {
+            return Results.Problem(detail: "Amount is too large.", statusCode: StatusCodes.Status400BadRequest);
+        }
     }
 }

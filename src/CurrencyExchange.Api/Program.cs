@@ -11,7 +11,7 @@ builder.Services.AddOpenApi();
 builder.Services.Configure<FrankfurterOptions>(
     builder.Configuration.GetSection(FrankfurterOptions.SectionName));
 
-// registering Microsft memory cache
+// registering Microsoft memory cache
 builder.Services.AddMemoryCache();
 
 // registering Frankfurter as exchange rate provider with HttpClient using defined defaults
@@ -27,7 +27,7 @@ builder.Services.AddHttpClient<IExchangeRateProvider, FrankfurterRateProvider>((
 // registering CurrencyConverter as default (passing above rate provider)
 builder.Services.AddScoped<ICurrencyConverter, CurrencyConverter>();
 
-// seting browser origins allowed to call the API (set in the configuration) to the Blazor origins
+// setting browser origins allowed to call the API (set in the configuration) to the Blazor origins
 string[] allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
