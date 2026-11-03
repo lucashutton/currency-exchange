@@ -25,7 +25,7 @@ public static class CurrencyEndpoints
             // float error message up with status 503
             return Results.Problem(detail: ex.Message, statusCode: StatusCodes.Status503ServiceUnavailable);
         }
-        
+
     }
 
     private static async Task<IResult> ConvertCurrency(
@@ -36,7 +36,7 @@ public static class CurrencyEndpoints
             // uppercases code; invariant to avoid server language dependence
             from = from.ToUpperInvariant();
             to = to.ToUpperInvariant();
-            
+
             // check that the currency code is valid and supported by the provider
             List<string> codes = new() { from, to };
             IReadOnlyList<Currency> currencies = await provider.GetCurrenciesAsync(ct);
@@ -47,7 +47,7 @@ public static class CurrencyEndpoints
                     return Results.Problem(detail: $"Unknown currency code: {code}.", statusCode: StatusCodes.Status400BadRequest);
                 }
             }
-            
+
 
             // convert converter's result into API response object
             ConversionResult result = await converter.ConvertAsync(from, to, amount, ct);

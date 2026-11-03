@@ -1,4 +1,5 @@
 namespace CurrencyExchange.Core;
+
 public class CurrencyConverter(IExchangeRateProvider rateProvider) : ICurrencyConverter
 {
     public async Task<ConversionResult> ConvertAsync(string from, string to, decimal amount, CancellationToken ct = default)
@@ -16,7 +17,7 @@ public class CurrencyConverter(IExchangeRateProvider rateProvider) : ICurrencyCo
         {
             rate = 1;
             date = DateOnly.FromDateTime(DateTime.UtcNow);
-        } 
+        }
         // otherwise, call the rateProvider to get the exchange rate
         else
         {

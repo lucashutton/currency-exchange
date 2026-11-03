@@ -7,7 +7,7 @@ namespace CurrencyExchange.Web.Services;
 
 public class CurrencyApiClient(HttpClient http)
 {
-    public Task<List<CurrencyDto>> GetCurrenciesAsync(CancellationToken ct = default) 
+    public Task<List<CurrencyDto>> GetCurrenciesAsync(CancellationToken ct = default)
         => GetAsync<List<CurrencyDto>>("api/currencies", ct);
 
     public Task<ConversionResponse> ConvertAsync(string from, string to, decimal amount, CancellationToken ct = default)
@@ -40,5 +40,5 @@ public class CurrencyApiClient(HttpClient http)
     }
 
     private record ProblemResponse(string? Detail);
-    
+
 }

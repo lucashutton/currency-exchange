@@ -1,4 +1,5 @@
 namespace CurrencyExchange.Core;
+
 public interface IExchangeRateProvider
 {
     Task<IReadOnlyList<Currency>> GetCurrenciesAsync(CancellationToken ct = default);

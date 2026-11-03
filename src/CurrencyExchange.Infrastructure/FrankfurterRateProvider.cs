@@ -62,7 +62,7 @@ public class FrankfurterRateProvider(HttpClient client, IMemoryCache memoryCache
         {
             throw new ExchangeRateUnavailableException("Frankfurter API timed out.", ex);
         }
-        
+
         // catch potential cases of incorrect codes being standardised externally by the API and not matching original string
         if (!response.Rates.TryGetValue(to, out decimal rate))
         {
