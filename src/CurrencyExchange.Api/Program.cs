@@ -1,8 +1,30 @@
+using CurrencyExchange.Core;
+using CurrencyExchange.Infrastructure;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// using Frankfurter currency exchange API
+builder.Services.Configure<FrankfurterOptions>(
+    builder.Configuration.GetSection(FrankfurterOptions.SectionName));
+
+// registering Microsft memory cache
+builder.Services.AddMemoryCache();
+
+// registering Frankfurter as exchange rate provider with HttpClient using defined defaults
+builder.Services.AddHttpClient<IExchangeRateProvider, FrankfurterRateProvider>((services, client) =>
+    {
+        // returns actual FrankfurterOptions out of IOptions
+        FrankfurterOptions options = services.GetRequiredService<IOptions<FrankfurterOptions>>().Value;
+        client.BaseAddress = new Uri(options.BaseUrl);
+        client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
+    }
+);
+
+// registering CurrencyConverter as default (passing above rate provider)
+builder.Services.AddScoped<ICurrencyConverter, CurrencyConverter>();
 
 var app = builder.Build();
 
