@@ -116,6 +116,7 @@
     private void Swap()
     {
         (from, to) = (to, from);
+        ClearResult();
     }
 
     private void ClearResult() 
@@ -128,15 +129,14 @@
     {
         error = null;
         ClearResult();
-
-        isLoading = true;
         try
         {
             if (amount is not decimal value)
             {
                 return;
             }
-            result = await Api.ConvertAsync(from, to, amount.Value);
+            isLoading = true;
+            result = await Api.ConvertAsync(from, to, value);
         }
         catch (ApiException ex)
         {
